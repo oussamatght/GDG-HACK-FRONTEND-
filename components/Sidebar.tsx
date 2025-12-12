@@ -15,7 +15,7 @@ const navItems = [
   { id: "store", label: "Store", icon: Store, href: "/store" },
   { id: "arena", label: "Arena", icon: Swords, href: "/arena" },
   { id: "leaderboard", label: "Rankings", icon: Trophy, href: "/profile" },
-  { id: "learn", label: "Lessons", icon: BookOpen, href: "/learn copy" },
+  { id: "learn", label: "Lessons", icon: BookOpen, href: "/learn" },
   { id: "docs", label: "Docs", icon: FileText, href: "/docs" },
 ]
 
