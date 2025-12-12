@@ -43,3 +43,5 @@ declare module "framer-motion"
 declare module "next/navigation"
 declare module "next/link"
 declare module "@/components/sidebar"
+
+declare module "@/lib/lessons-data"
