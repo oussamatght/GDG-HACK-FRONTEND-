@@ -44,11 +44,11 @@ function generateStages(worldId: number, count = 20): Stage[] {
 
 function WorldRankingSidebar({ worldId }: { worldId: number }) {
   const mockRankings = [
-    { rank: 1, name: "ShadowCoder", score: 15420, country: "🇺🇸" },
-    { rank: 2, name: "NightBlade", score: 14850, country: "🇰🇷" },
-    { rank: 3, name: "CodeMaster", score: 14200, country: "🇯🇵" },
-    { rank: 4, name: "DarkSoul", score: 13890, country: "🇬🇧" },
-    { rank: 5, name: "ByteWarrior", score: 13450, country: "🇩🇪" },
+    { rank: 1, name: "ShadowCoder", score: 15420, country: "🇺🇸", gold: 5000 },
+    { rank: 2, name: "NightBlade", score: 14850, country: "🇰🇷", gold: 4500 },
+    { rank: 3, name: "CodeMaster", score: 14200, country: "🇯🇵", gold: 4000 },
+    { rank: 4, name: "DarkSoul", score: 13890, country: "🇬🇧", gold: 3500 },
+    { rank: 5, name: "ByteWarrior", score: 13450, country: "🇩🇪", gold: 3000 },
   ]
 
   return (
@@ -108,7 +108,9 @@ function WorldRankingSidebar({ worldId }: { worldId: number }) {
             </span>
             <span className="text-sm">{player.country}</span>
             <span className="font-mono text-xs text-souls-light flex-1 truncate">{player.name}</span>
-            <span className="font-mono text-xs text-souls-gold">{player.score.toLocaleString()}</span>
+                <span className="font-mono text-souls-gold">
+  {Number(player.gold ?? 0).toLocaleString()}
+</span>
           </motion.div>
         ))}
       </div>

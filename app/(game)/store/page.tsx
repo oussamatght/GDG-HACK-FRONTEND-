@@ -86,7 +86,7 @@ export default function StorePage() {
               <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-sm font-bold text-yellow-900">
                 G
               </div>
-              <span className="font-mono text-2xl text-souls-gold">{player.gold.toLocaleString()}</span>
+              
             </div>
             <div className="flex items-center gap-3 bg-souls-dark px-6 py-3 border-2 border-souls-darker">
               <div className="w-8 h-8 bg-cyan-400 rotate-45 flex items-center justify-center">

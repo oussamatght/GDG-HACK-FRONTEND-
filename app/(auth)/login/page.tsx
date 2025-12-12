@@ -8,6 +8,7 @@ import { PixelButton } from "@/components/pixel-button"
 import { PixelInput } from "@/components/pixel-input"
 import { Logo } from "@/components/logo"
 import { useGame } from "@/lib/game-context"
+import { apiClient } from "@/lib/api-client"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -16,25 +17,35 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  interface Event {
-    preventDefault: () => void
-  }
-  const handleLogin = async (e: Event) => {
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setLoading(true)
 
-    // Simulate login - in production, this would be a real auth call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    if (email && password) {
+    try {
+      // Real API call to backend
+      const response = await apiClient.login(email, password)
+      
+      // Store token
+      apiClient.setToken(response.token)
+      
+      // Update game context
       setIsAuthenticated(true)
-      setPlayer({ ...player, username: email.split("@")[0] })
+      setPlayer({ 
+        ...player, 
+        username: response.user.name || email.split("@")[0],
+        id: response.user.id,
+        email: response.user.email
+      })
+      
+      // Redirect to intro
       router.push("/intro")
-    } else {
-      setError("Please enter your credentials")
+    } catch (err: any) {
+      setError(err.message || "Login failed. Please check your credentials.")
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (
@@ -66,7 +77,14 @@ export default function LoginPage() {
           </h2>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <PixelInput type="email" label="Email" placeholder="warrior@code.souls" value={email} onChange={setEmail} />
+            <PixelInput 
+              type="email" 
+              label="Email" 
+              placeholder="warrior@code.souls" 
+              value={email} 
+              onChange={setEmail} 
+              required
+            />
 
             <PixelInput
               type="password"
@@ -74,6 +92,7 @@ export default function LoginPage() {
               placeholder="••••••••"
               value={password}
               onChange={setPassword}
+              required
             />
 
             {error && (

@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
@@ -11,22 +9,23 @@ import { PixelButton } from "@/components/pixel-button"
 import { PixelInput } from "@/components/pixel-input"
 import { Logo } from "@/components/logo"
 import { useGame } from "@/lib/game-context"
+import { apiClient } from "@/lib/api-client"
 
 export default function SignupPage() {
   const router = useRouter()
   const { setIsAuthenticated, setPlayer, player } = useGame()
-  const [username, setUsername] = useState("")
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
   const validate = () => {
     const newErrors: Record<string, string> = {}
 
-    if (!username || username.length < 3) {
-      newErrors.username = "Username must be at least 3 characters"
+    if (!name || name.length < 3) {
+      newErrors.name = "Name must be at least 3 characters"
     }
     if (!email || !email.includes("@")) {
       newErrors.email = "Please enter a valid email"
@@ -47,13 +46,32 @@ export default function SignupPage() {
     if (!validate()) return
 
     setLoading(true)
-    // Simulate signup - in production, this would be a real auth call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    setIsAuthenticated(true)
-    setPlayer({ ...player, username })
-    router.push("/intro")
-    setLoading(false)
+    
+    try {
+      // Real API call to backend
+      const response = await apiClient.signup(name, email, password)
+      
+      // Store token
+      apiClient.setToken(response.token)
+      
+      // Update game context
+      setIsAuthenticated(true)
+      setPlayer({ 
+        ...player, 
+        username: response.user.name,
+        id: response.user.id,
+        email: response.user.email
+      })
+      
+      // Redirect to intro
+      router.push("/intro")
+    } catch (err: any) {
+      setErrors({ 
+        general: err.message || "Signup failed. Please try again." 
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -85,13 +103,23 @@ export default function SignupPage() {
           </h2>
 
           <form onSubmit={handleSignup} className="flex flex-col gap-4">
+            {errors.general && (
+              <motion.p
+                className="text-red-400 font-mono text-sm text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                {errors.general}
+              </motion.p>
+            )}
+
             <PixelInput
               type="text"
-              label="Username"
+              label="Name"
               placeholder="CodeWarrior"
-              value={username}
-              onChange={setUsername}
-              error={errors.username}
+              value={name}
+              onChange={setName}
+              error={errors.name}
             />
 
             <PixelInput
