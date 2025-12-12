@@ -11,7 +11,7 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { id: "map", label: "World Map", icon: Map, href: "/world/1" },
+  { id: "map", label: "World Map", icon: Map, href: "/world-selector" },
   { id: "store", label: "Store", icon: Store, href: "/store" },
   { id: "arena", label: "Arena", icon: Swords, href: "/multiplayer" },
   { id: "leaderboard", label: "Rankings", icon: Trophy, href: "/profile" },
