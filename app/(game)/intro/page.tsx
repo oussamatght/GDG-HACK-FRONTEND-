@@ -101,10 +101,14 @@ export const IntroScreen = ({ onComplete }: IntroScreenProps) => {
     }
   }, [currentStep, onComplete])
 
-  const handleSkip = () => {
-    setFadeOut(true)
-    setTimeout(onComplete, 500)
-  }
+ const router = useRouter()
+
+const handleSkip = () => {
+  
+  router.push("/level-select")
+}
+
+
 
   const step = storySteps[currentStep]
 
@@ -135,12 +139,14 @@ export const IntroScreen = ({ onComplete }: IntroScreenProps) => {
       </div>
 
       {/* Skip button */}
-      <button
-        onClick={handleSkip}
-        className="absolute top-4 right-4 text-souls-light/60 hover:text-souls-light text-sm font-mono transition-colors"
-      >
-        SKIP {"->"}
-      </button>
+    <button
+  onClick={handleSkip}
+  className="absolute top-4 right-4 z-50 pointer-events-auto text-souls-light/60 hover:text-souls-light text-sm font-mono transition-colors"
+>
+  SKIP →
+</button>
+
+
 
       {/* Progress indicator */}
       <div className="absolute top-4 left-4 flex gap-1">
