@@ -14,7 +14,6 @@ import { PixelButton } from "@/components/pixel-button"
 import { World3DBackground } from "@/components/world-3d-background"
 import { ChevronLeft, Lightbulb } from "lucide-react"
 
-// Sample challenge data with enhanced documentation
 const SAMPLE_CHALLENGE = {
   id: 1,
   title: "Create a Navigation Bar",

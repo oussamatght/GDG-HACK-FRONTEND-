@@ -1,68 +1,53 @@
-// lib/game-context.tsx
 "use client"
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { apiClient } from './api-client'
+import { createContext, useContext, useState, type ReactNode } from "react"
+import { DEFAULT_PLAYER, WORLDS, type PlayerStats, type World, type Stage } from "./game-state"
 
-interface Player {
-  id?: string
-  username: string
-  email?: string
-  level?: number
-  health?: number
-  score?: number
-  // Add other player properties as needed
-}
-
-interface GameContextType {
+type GameContextType = {
+  player: PlayerStats
+  setPlayer: (player: PlayerStats) => void
+  worlds: World[]
+  currentWorld: World | null
+  setCurrentWorld: (world: World | null) => void
+  stages: Stage[]
+  setStages: (stages: Stage[]) => void
+  currentStage: Stage | null
+  setCurrentStage: (stage: Stage | null) => void
   isAuthenticated: boolean
   setIsAuthenticated: (auth: boolean) => void
-  player: Player
-  setPlayer: (player: Player) => void
-  logout: () => void
+  hasCompletedIntro: boolean
+  setHasCompletedIntro: (completed: boolean) => void
 }
 
-const GameContext = createContext<GameContextType | undefined>(undefined)
+const GameContext = createContext<GameContextType | null>(null)
 
 export function GameProvider({ children }: { children: ReactNode }) {
+  const [player, setPlayer] = useState<PlayerStats>(DEFAULT_PLAYER)
+  const [worlds] = useState<World[]>(WORLDS)
+  const [currentWorld, setCurrentWorld] = useState<World | null>(null)
+  const [stages, setStages] = useState<Stage[]>([])
+  const [currentStage, setCurrentStage] = useState<Stage | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [player, setPlayer] = useState<Player>({ username: '' })
-
-  // Check for existing auth on mount
-  useEffect(() => {
-    const token = apiClient.getToken()
-    if (token) {
-      // Verify token by fetching current user
-      apiClient.getCurrentUser()
-        .then(({ user }) => {
-          setIsAuthenticated(true)
-          setPlayer({
-            id: user.id,
-            username: user.name,
-            email: user.email
-          })
-        })
-        .catch(() => {
-          // Token is invalid, clear it
-          apiClient.clearToken()
-        })
-    }
-  }, [])
-
-  const logout = () => {
-    apiClient.clearToken()
-    setIsAuthenticated(false)
-    setPlayer({ username: '' })
-  }
+  const [hasCompletedIntro, setHasCompletedIntro] = useState(false)
 
   return (
-    <GameContext.Provider value={{
-      isAuthenticated,
-      setIsAuthenticated,
-      player,
-      setPlayer,
-      logout
-    }}>
+    <GameContext.Provider
+      value={{
+        player,
+        setPlayer,
+        worlds,
+        currentWorld,
+        setCurrentWorld,
+        stages,
+        setStages,
+        currentStage,
+        setCurrentStage,
+        isAuthenticated,
+        setIsAuthenticated,
+        hasCompletedIntro,
+        setHasCompletedIntro,
+      }}
+    >
       {children}
     </GameContext.Provider>
   )
@@ -70,8 +55,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
 export function useGame() {
   const context = useContext(GameContext)
-  if (context === undefined) {
-    throw new Error('useGame must be used within a GameProvider')
+  if (!context) {
+    throw new Error("useGame must be used within a GameProvider")
   }
   return context
 }

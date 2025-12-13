@@ -146,8 +146,10 @@ export default function WorldPage() {
   const backgroundGif = worldBackgrounds[worldTheme] || worldBackgrounds.hell
 
   useEffect(() => {
-    setCurrentWorld(world)
+   setTimeout(() => {
+     setCurrentWorld(world)
     setStages(generateStages(worldId, 20))
+   }, 0);
   }, [worldId, world, setCurrentWorld])
 
   const handleStageSelect = (stage: Stage) => {
