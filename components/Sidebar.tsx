@@ -59,6 +59,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         <Button
           variant="ghost"
           className="w-full justify-center lg:justify-start gap-3 h-11 lg:h-11 text-souls-light/60 hover:bg-souls-dark hover:text-souls-light font-mono text-sm"
+          onClick={() => router.push("/settings")}
         >
           <Settings size={18} />
           <span className="hidden lg:inline font-medium">Settings</span>

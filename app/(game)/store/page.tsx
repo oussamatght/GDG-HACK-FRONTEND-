@@ -8,6 +8,7 @@ import { StoreItemCard } from "@/components/store-item-card"
 import { HUD } from "@/components/hud"
 import { ParticleBackground } from "@/components/particle-background"
 import { cn } from "@/lib/utils"
+import Sidebar from '../../../components/Sidebar';
 
 type Category = "all" | "clothing" | "weapons" | "consumables" | "special"
 
@@ -60,12 +61,15 @@ export default function StorePage() {
   }
 
   return (
-    <div className="min-h-screen bg-souls-darker relative">
-      <ParticleBackground theme="hell" />
 
-      {/* HUD */}
-      <HUD />
+ <div className="min-h-screen bg-souls-darker relative flex">
+      <Sidebar activeTab={selectedCategory} onTabChange={setSelectedCategory} />
 
+      <div className="flex-1 pt-24 pb-8 px-4 lg:pl-64 relative">
+        <ParticleBackground theme="hell" />
+        <HUD />
+
+        <div className="max-w-4xl mx-auto relative z-10"></div>
       {/* Main Content */}
       <div className="pt-24 pb-8 px-4">
         <div className="max-w-6xl mx-auto">
@@ -143,6 +147,7 @@ export default function StorePage() {
           </motion.div>
         </div>
       </div>
+    </div>
     </div>
   )
 }

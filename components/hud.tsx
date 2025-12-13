@@ -65,7 +65,7 @@ export function HUD() {
 
         {/* Logo in center */}
         <div className="hidden md:flex items-center">
-          <div className="w-12 h-12 relative">
+          <div className="w-30 h-15 relative">
             <Image
               src="/images/code-souls-logo-v1-1.png"
               alt="Code Souls"
