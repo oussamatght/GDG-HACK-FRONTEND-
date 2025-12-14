@@ -117,7 +117,6 @@ export default function SettingsPage() {
             </div>
           </motion.div>
 
-          {/* Display Settings */}
           <motion.div
             className="bg-souls-dark border-4 border-souls-darker p-6 mb-6"
             initial={{ opacity: 0, y: 20 }}
